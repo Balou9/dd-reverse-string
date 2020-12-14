@@ -57,7 +57,7 @@ resource "aws_s3_bucket_policy" "b" {
       "Sid": "AllowReverseStringHandlerListBucket",
       "Effect": "Allow",
       "Principal": {
-        "AWS": !GetAtt ReverseStringHandlerExecutionRole.Arn
+        "AWS": "!GetAtt ReverseStringHandlerExecutionRole.Arn"
       },
       "Action": [ "s3:ListBucket" ],
       "Resource": "!Sub arn:aws:s3:::{Bucket}"
