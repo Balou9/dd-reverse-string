@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 // TODO: Bucket
-resource "aws_s3_bucket" "Bucket" {
+resource "aws_s3_bucket" "bucket" {
   tags = {
     Key        = "dd-reverse-string:name"
     Value      = "dd-reverse-string"
@@ -14,7 +14,7 @@ resource "aws_s3_bucket" "Bucket" {
 
 // TODO: Bucket Policy
 resource "aws_s3_bucket_policy" "b" {
-  bucket = aws_s3_bucket.b.id
+  bucket = aws_s3_bucket.bucket.id
 
   policy = <<POLICY
 {
