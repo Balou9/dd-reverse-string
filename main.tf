@@ -24,7 +24,7 @@ resource "aws_s3_bucket_policy" "b" {
       "Sid": "AllowOriginAccessIdentity",
       "Effect": "Allow",
       "Principal": {
-        CanonialUser: !GetAtt OriginAccessIdentity.S3CanonialUserId
+        "CanonialUser": "!GetAtt OriginAccessIdentity.S3CanonialUserId"
       },
       "Action": [
         "s3:Get*",
@@ -39,23 +39,23 @@ resource "aws_s3_bucket_policy" "b" {
       "Sid": "AllowReverseStringHandlerGetObject",
       "Effect": "Allow",
       "Principal": {
-        AWS: !GetAtt ReverseStringHandlerExecutionRole.Arn
+        AWS: "!GetAtt ReverseStringHandlerExecutionRole.Arn"
       },
       "Action": [ "s3:GetObject" ],
       "Resource": "!Sub arn:aws:s3:::{Bucket}/*"
     },
     {
       "Sid": "AllowReverseStringHandlerPutObject",
-      "Effect": "Allow"
+      "Effect": "Allow",
       "Principal": {
-        AWS: !GetAtt ReverseStringHandlerExecutionRole.Arn
+        "AWS": "!GetAtt ReverseStringHandlerExecutionRole.Arn"
       },
       "Action": [ "s3:PutObject" ],
       "Resource": "!Sub arn:aws:s3:::{Bucket}/*"
     },
     {
       "Sid": "AllowReverseStringHandlerListBucket",
-      "Effect": "Allow"
+      "Effect": "Allow",
       "Principal": {
         AWS: !GetAtt ReverseStringHandlerExecutionRole.Arn
       },
@@ -95,7 +95,7 @@ resource "aws_iam_policy" "policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowLogCreation"
+      "Sid": "AllowLogCreation",
       "Effect": "Allow",
       "Action": [
         "logs:CreateLogGroup",
