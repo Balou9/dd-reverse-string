@@ -7,8 +7,8 @@ provider "aws" {
 // TODO: Bucket
 resource "aws_s3_bucket" "bucket" {
   tags = {
-    Key        = "dd-reverse-string:name"
-    Value      = "dd-reverse-string"
+    Key   = "dd-reverse-string:name"
+    Value = "dd-reverse-string"
   }
 } // TODO: add env variable ENVIRONMENT: test | prod ?
 
@@ -69,7 +69,7 @@ POLICY
 
 // TODO: LambdaExecutionRole
 resource "aws_iam_role" "role" {
-  name = "ReverseStringHandlerExecutionrole"
+  name               = "ReverseStringHandlerExecutionrole"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -89,7 +89,7 @@ EOF
 
 // TODO: LambdaExecutionPolicy
 resource "aws_iam_policy" "policy" {
-  name = "ReverseStringHandlerExecutionPolicy"
+  name   = "ReverseStringHandlerExecutionPolicy"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -128,6 +128,6 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "attach_reverseStringHandlerPolicy" {
-  role = aws_iam_role.role.name
+  role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.policy.arn
 }
