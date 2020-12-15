@@ -1,10 +1,14 @@
-// TODO: declare variables set by github actions workflow
-#
+// Declare variables set by github actions workflow
+
 provider "aws" {
   region = "us-east-1"
 }
 
-// TODO: Bucket
+resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
+  comment = "dd-reverse-strings-oai"
+}
+
+// Bucket
 resource "aws_s3_bucket" "bucket" {
   tags = {
     Key   = "dd-reverse-string:name"
@@ -12,7 +16,24 @@ resource "aws_s3_bucket" "bucket" {
   }
 } // TODO: add env variable ENVIRONMENT: test | prod ?
 
-// TODO: Bucket Policy
+# data "aws_iam_policy_document" "example" {
+#   statement {
+#     sid = "AllowOriginAccesIdentity"
+#     effect = "allow"
+#     principals = {
+#
+#     }
+#     actions = [
+#       "s3:Get*",
+#       "s3:List*"
+#     ]
+#     resources = [
+#       "!GetAtt Bucket.Arn",
+#       "!Sub arn:aws:s3:::{Bucket}/*"
+#     ]
+#   }
+# }
+// Bucket Policy
 resource "aws_s3_bucket_policy" "b" {
   bucket = aws_s3_bucket.bucket.id
 
@@ -65,9 +86,9 @@ resource "aws_s3_bucket_policy" "b" {
   ]
 }
 POLICY
-} // TODO: syntax issues concerning resource arns
+}
 
-// TODO: LambdaExecutionRole
+// LambdaExecutionRole
 resource "aws_iam_role" "role" {
   name               = "ReverseStringHandlerExecutionrole"
   assume_role_policy = <<EOF
@@ -87,7 +108,7 @@ resource "aws_iam_role" "role" {
 EOF
 }
 
-// TODO: LambdaExecutionPolicy
+// LambdaExecutionPolicy
 resource "aws_iam_policy" "policy" {
   name   = "ReverseStringHandlerExecutionPolicy"
   policy = <<EOF
@@ -127,10 +148,10 @@ resource "aws_iam_policy" "policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "attach_reverseStringHandlerPolicy" {
-  role       = aws_iam_role.role.name
-  policy_arn = aws_iam_policy.policy.arn
-}
+# resource "aws_iam_role_policy_attachment" "attach_reverseStringHandlerPolicy" {
+#   role       = aws_iam_role.role.name
+#   policy_arn = aws_iam_policy.policy.arn
+# }
 
 # resource "aws_lambda_function" "lambda" {
 #   filename      = "lambda_function_payload.zip"
