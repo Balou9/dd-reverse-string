@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   statement {
     sid = "AllowOriginAccesIdentity"
     effect = "allow"
-    principals = {
+    principals {
       "CanonicalUser": aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id
     }
     actions = [
@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   statement {
     sid = "AllowReverseStringHandlerGetObject"
     effect = "allow"
-    principals = {
+    principals {
       type = "AWS"
       identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
     }
@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   statement {
     sid = "AllowReverseStringHandlerPutObject"
     effect = "allow"
-    principals = {
+    principals {
       type = "AWS"
       identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
     }
@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   statement {
     sid = "AllowReverseStringHandlerListBucket"
     effect = "allow"
-    principals = {
+    principals {
       type = "AWS"
       identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
     }
