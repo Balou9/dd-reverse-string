@@ -1,4 +1,8 @@
 // Declare variables set by github actions workflow
+variable "s3_bucket_name" {
+  type        = string
+  description = "The name of the s3 bucket"
+}
 
 provider "aws" {
   region = "us-east-1"
@@ -137,7 +141,7 @@ EOF
 #   role       = aws_iam_role.role.name
 #   policy_arn = aws_iam_policy.policy.arn
 # }
-# 
+#
 # resource "aws_lambda_function" "reverse_string_handler" {
 #   filename      = "lambda_function_payload.zip"
 #   function_name = "lambda_function_name"
