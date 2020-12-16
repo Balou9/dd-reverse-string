@@ -81,71 +81,67 @@ resource "aws_s3_bucket_policy" "policy" {
   policy = data.aws_iam_policy_document.bucket_policy_document.id
 }
 
+
+data "aws_iam_policy_document" "assume_role_policy_document" {
+  statement {
+    sid = "AllowAssumeRoleByLambda"
+    effect = "Allow"
+    principals {
+      type = "Service"
+      identifiers = [ "lambda.amazonaws.com" ]
+    }
+    action = [ "sts:AssumeRole" ]
+  }
+}
+
 // LambdaExecutionRole
 resource "aws_iam_role" "role" {
   name               = "ReverseStringHandlerExecutionrole"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_document.id
 }
 
+
+data "aws_iam_policy" "reverse_string_handler_execution_policy" {
+
+  statement {
+    sid = "AllowLogCreation"
+    effect = "Allow"
+    action = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+    resources = [ "arn:aws:logs:*:*:*" ]
+  }
+
+  statement {
+    sid = "AllowS3GetObject"
+    effect = "Allow"
+    action = [ "s3:GetObject" ]
+    resources = "arn:aws:s3:::${var.s3_bucket_name}/*"
+  }
+
+  statement {
+    sid = "AllowS3PutObject"
+    effect = "Allow"
+    action = [ "s3:PutObject" ]
+    resources = "arn:aws:s3:::${var.s3_bucket_name}/*"
+  }
+
+  statement {
+    sid = "AllowS3ListBucket"
+    effect = "Allow"
+    action = [ "s3:ListBucket" ]
+    resources = "arn:aws:s3:::${var.s3_bucket_name}"
+  }
+
+}
 // LambdaExecutionPolicy
 resource "aws_iam_policy" "policy" {
   name   = "ReverseStringHandlerExecutionPolicy"
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowLogCreation",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-      ],
-      "Resource": "arn:aws:logs:*:*:*"
-    },
-    {
-      "Sid": "AllowS3GetObject",
-      "Effect": "Allow",
-      "Action": [ "s3:GetObject" ],
-      "Resource": "!Sub arn:aws:s3:::{Bucket}/*"
-    },
-    {
-      "Sid": "AllowS3PutObject",
-      "Effect": "Allow",
-      "Action": [ "s3:PutObject" ],
-      "Resource": "!Sub arn:aws:s3:::{Bucket}/*"
-    },
-    {
-      "Sid": "AllowS3ListBucket",
-      "Effect": "Allow",
-      "Action": [ "s3:ListBucket" ],
-      "Resource": "!Sub arn:aws:s3:::{Bucket}"
-    }
-  ]
-}
-EOF
+  policy = data.aws_iam_policy.reverse_string_handler_execution_policy.id
 }
 
-# resource "aws_iam_role_policy_attachment" "attach_reverseStringHandlerPolicy" {
-#   role       = aws_iam_role.role.name
-#   policy_arn = aws_iam_policy.policy.arn
-# }
-#
 # resource "aws_lambda_function" "reverse_string_handler" {
 #   filename      = "lambda_function_payload.zip"
 #   function_name = "lambda_function_name"
