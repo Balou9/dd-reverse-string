@@ -40,6 +40,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
+        if: github.event_name == 'pull_request'
         run: terraform plan -no-color
         continue-on-error: true
 
@@ -51,5 +52,5 @@ jobs:
         # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply
              -var "s3_bucket_name=reverse_string_bucket"
-             -var "reverse_string_handler_name="reverse_string" 
+             -var "reverse_string_handler_name="reverse_string"
              -auto-approve -no-color
