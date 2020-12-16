@@ -117,7 +117,7 @@ data "aws_iam_policy_document" "assume_role_policy_document" {
 // LambdaExecutionRole
 resource "aws_iam_role" "role" {
   name               = "ReverseStringHandlerAssumeRolePolicyDocument"
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_document.id
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy_document.json
 }
 
 
@@ -163,9 +163,9 @@ resource "aws_iam_policy" "policy" {
 }
 
 resource "aws_iam_role_policy" "policy" {
-  name = "ReverseStringHandlerExecutionrole"
-  role = aws_iam_role.role.id
-  policy = aws_iam_policy.policy.id
+  name   = "ReverseStringHandlerExecutionrole"
+  role   = aws_iam_role.role.id
+  policy = aws_iam_policy.policy.json
 }
 
 resource "aws_lambda_function" "reverse_string_handler" {
