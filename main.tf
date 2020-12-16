@@ -4,10 +4,17 @@ variable "s3_bucket_name" {
   description = "The name of the s3 bucket"
 }
 
+variable "reverse_string_handler_name" {
+  type = string
+  description = "The lambda function name of the 'reverse string' handler"
+
+}
+
 provider "aws" {
   region = "us-east-1"
 }
 
+// Origin Access Identity
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
   comment = "dd-reverse-strings-oai"
 }
@@ -21,6 +28,7 @@ resource "aws_s3_bucket" "bucket" {
   bucket = "${var.s3_bucket_name}-bucket"
 }
 
+// Bucket Policy
 data "aws_iam_policy_document" "bucket_policy_document" {
 
   statement {
@@ -75,7 +83,6 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 
 }
 
-// Bucket Policy
 resource "aws_s3_bucket_policy" "policy" {
   bucket = aws_s3_bucket.bucket.id
   policy = data.aws_iam_policy_document.bucket_policy_document.id
@@ -142,22 +149,10 @@ resource "aws_iam_policy" "policy" {
   policy = data.aws_iam_policy_document.reverse_string_handler_execution_policy.id
 }
 
-# resource "aws_lambda_function" "reverse_string_handler" {
-#   filename      = "lambda_function_payload.zip"
-#   function_name = "lambda_function_name"
-#   role          = aws_iam_role.iam_for_lambda.arn
-#   handler       = "exports.test"
-#
-#   # # The filebase64sha256() function is available in Terraform 0.11.12 and later
-#   # # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
-#   # # source_code_hash = "${base64sha256(file("lambda_function_payload.zip"))}"
-#   # source_code_hash = filebase64sha256("lambda_function_payload.zip")
-#
-#   runtime = "nodejs12.x"
-#
-#   environment {
-#     variables = {
-#
-#     }
-#   }
-# }
+resource "aws_lambda_function" "reverse_string_handler" {
+  filename      = "dummy.zip"
+  function_name = "${var.reverse_string_handler_name}"
+  role          = aws_iam_role.iam_for_lambda.arn
+  handler       = "exports.handler"
+  runtime = "nodejs12.x"
+}
