@@ -43,7 +43,8 @@ data "aws_iam_policy_document" "bucket_policy_document" {
     sid = "AllowReverseStringHandlerGetObject"
     effect = "allow"
     principals = {
-      "AWS": aws_lambda_function.reverse_string_handler.arn
+      type = "AWS"
+      identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
     }
     actions = [ "s3:GetObject" ]
     resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
@@ -53,7 +54,8 @@ data "aws_iam_policy_document" "bucket_policy_document" {
     sid = "AllowReverseStringHandlerPutObject"
     effect = "allow"
     principals = {
-      "AWS": aws_lambda_function.reverse_string_handler.arn
+      type = "AWS"
+      identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
     }
     actions = [ "s3:PutObject" ]
     resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
@@ -63,7 +65,8 @@ data "aws_iam_policy_document" "bucket_policy_document" {
     sid = "AllowReverseStringHandlerListBucket"
     effect = "allow"
     principals = {
-      "AWS": aws_lambda_function.reverse_string_handler.arn
+      type = "AWS"
+      identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
     }
     actions = [ "s3:ListBucket" ]
     resources = [ "arn:aws:s3:::${var.s3_bucket_name}" ]
@@ -74,7 +77,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
 // Bucket Policy
 resource "aws_s3_bucket_policy" "policy" {
   bucket = aws_s3_bucket.bucket.id
-  policy = aws_iam_policy_document.bucket_policy_document.id
+  policy = data.aws_iam_policy_document.bucket_policy_document.id
 }
 
 // LambdaExecutionRole
