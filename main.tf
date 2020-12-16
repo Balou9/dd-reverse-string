@@ -151,8 +151,8 @@ resource "aws_iam_policy" "policy" {
 
 resource "aws_lambda_function" "reverse_string_handler" {
   filename      = "dummy.zip"
-  function_name = "${var.reverse_string_handler_name}"
-  role          = aws_iam_role.iam_for_lambda.arn
+  function_name = "${var.reverse_string_handler_name}_handler"
+  role          = aws_iam_role.role.arn
   handler       = "exports.handler"
   runtime = "nodejs12.x"
 }
