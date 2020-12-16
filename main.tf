@@ -160,7 +160,7 @@ data "aws_iam_policy_document" "reverse_string_handler_execution_policy" {
 // LambdaExecutionPolicy
 resource "aws_iam_policy" "policy" {
   name   = "ReverseStringHandlerExecutionPolicy"
-  policy = data.aws_iam_policy_document.reverse_string_handler_execution_policy.id
+  policy = data.aws_iam_policy_document.reverse_string_handler_execution_policy.policy
 }
 
 resource "aws_lambda_function" "reverse_string_handler" {
