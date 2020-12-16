@@ -24,7 +24,6 @@ variable "reverse_string_handler_name" {
   type        = string
   description = "The lambda function name of the 'reverse string' handler"
   default = "reverse_string_handler"
-
 }
 
 

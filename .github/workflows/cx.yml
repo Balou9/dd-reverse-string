@@ -41,10 +41,11 @@ jobs:
       - name: Terraform Plan
         id: plan
         # if: github.event_name == 'pull_request'
-        run: terraform plan \
-             -no-color \
-             -var="s3_bucket_name=reverse_string_bucket" \
-             -var="reverse_string_handler_name=reverse_string"-no-color
+        run: |
+          terraform plan \
+            -no-color \
+            -var="s3_bucket_name=reverse_string_bucket" \
+            -var="reverse_string_handler_name=reverse_string"
         continue-on-error: true
 
       - name: Terraform Plan Status
@@ -53,8 +54,9 @@ jobs:
 
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply \
-             -auto-approve \
-             -no-color \
-             -var="s3_bucket_name=reverse_string_bucket" \
-             -var="reverse_string_handler_name=reverse_string"
+        run: |
+          terraform apply \
+            -auto-approve \
+            -no-color \
+            -var="s3_bucket_name=reverse_string_bucket" \
+            -var="reverse_string_handler_name=reverse_string"
