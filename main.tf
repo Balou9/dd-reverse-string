@@ -38,7 +38,7 @@ resource "aws_s3_bucket" "bucket" {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
   }
-  bucket = "${var.s3_bucket_name}_bucket"
+  bucket = "${var.s3_bucket_name}-bucket"
 }
 
 // Bucket Policy
