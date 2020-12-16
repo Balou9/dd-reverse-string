@@ -27,7 +27,8 @@ data "aws_iam_policy_document" "bucket_policy_document" {
     sid = "AllowOriginAccesIdentity"
     effect = "allow"
     principals {
-      "CanonicalUser": aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id
+      type = "CanonicalUser"
+      identifiers : [ aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id ]
     }
     actions = [
       "s3:Get*",
