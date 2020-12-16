@@ -165,7 +165,7 @@ resource "aws_iam_policy" "policy" {
 resource "aws_iam_role_policy" "policy" {
   name   = "ReverseStringHandlerExecutionrole"
   role   = aws_iam_role.role.id
-  policy = aws_iam_policy.policy.json
+  policy = aws_iam_policy.policy.policy
 }
 
 resource "aws_lambda_function" "reverse_string_handler" {
