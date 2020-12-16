@@ -49,4 +49,6 @@ jobs:
 
       - name: Terraform Apply
         # if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: terraform apply -auto-approve -no-color
+        run: terraform apply /
+             -var s3_bucket_name="reverse_string_bucket" /
+             -auto-approve -no-color

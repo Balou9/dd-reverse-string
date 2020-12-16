@@ -14,78 +14,63 @@ resource "aws_s3_bucket" "bucket" {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
   }
-} // TODO: add env variable ENVIRONMENT: test | prod ?
-
-# data "aws_iam_policy_document" "example" {
-#   statement {
-#     sid = "AllowOriginAccesIdentity"
-#     effect = "allow"
-#     principals = {
-#
-#     }
-#     actions = [
-#       "s3:Get*",
-#       "s3:List*"
-#     ]
-#     resources = [
-#       "!GetAtt Bucket.Arn",
-#       "!Sub arn:aws:s3:::{Bucket}/*"
-#     ]
-#   }
-# }
-// Bucket Policy
-resource "aws_s3_bucket_policy" "b" {
-  bucket = aws_s3_bucket.bucket.id
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowOriginAccessIdentity",
-      "Effect": "Allow",
-      "Principal": {
-        "CanonialUser": "!GetAtt OriginAccessIdentity.S3CanonialUserId"
-      },
-      "Action": [
-        "s3:Get*",
-        "s3:List*"
-      ],
-      "Resource": [
-        "!GetAtt Bucket.Arn",
-        "!Sub arn:aws:s3:::{Bucket}/*"
-      ]
-    },
-    {
-      "Sid": "AllowReverseStringHandlerGetObject",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "!GetAtt ReverseStringHandlerExecutionRole.Arn"
-      },
-      "Action": [ "s3:GetObject" ],
-      "Resource": "!Sub arn:aws:s3:::{Bucket}/*"
-    },
-    {
-      "Sid": "AllowReverseStringHandlerPutObject",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "!GetAtt ReverseStringHandlerExecutionRole.Arn"
-      },
-      "Action": [ "s3:PutObject" ],
-      "Resource": "!Sub arn:aws:s3:::{Bucket}/*"
-    },
-    {
-      "Sid": "AllowReverseStringHandlerListBucket",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "!GetAtt ReverseStringHandlerExecutionRole.Arn"
-      },
-      "Action": [ "s3:ListBucket" ],
-      "Resource": "!Sub arn:aws:s3:::{Bucket}"
-    }
-  ]
+  bucket = "${var.s3_bucket_name}-bucket"
 }
-POLICY
+
+data "aws_iam_policy_document" "bucket_policy_document" {
+
+  statement {
+    sid = "AllowOriginAccesIdentity"
+    effect = "allow"
+    principals = {
+      "CanonicalUser": aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id
+    }
+    actions = [
+      "s3:Get*",
+      "s3:List*"
+    ]
+    resources = [
+      aws_s3_bucket.bucket.arn,
+      "arn:aws:s3:::${var.s3_bucket_name}/*"
+    ]
+  }
+
+  statement {
+    sid = "AllowReverseStringHandlerGetObject"
+    effect = "allow"
+    principals = {
+      "AWS": aws_lambda_function.reverse_string_handler.arn
+    }
+    actions = [ "s3:GetObject" ]
+    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
+  }
+
+  statement {
+    sid = "AllowReverseStringHandlerPutObject"
+    effect = "allow"
+    principals = {
+      "AWS": aws_lambda_function.reverse_string_handler.arn
+    }
+    actions = [ "s3:PutObject" ]
+    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
+  }
+
+  statement {
+    sid = "AllowReverseStringHandlerListBucket"
+    effect = "allow"
+    principals = {
+      "AWS": aws_lambda_function.reverse_string_handler.arn
+    }
+    actions = [ "s3:ListBucket" ]
+    resources = [ "arn:aws:s3:::${var.s3_bucket_name}" ]
+  }
+
+}
+
+// Bucket Policy
+resource "aws_s3_bucket_policy" "policy" {
+  bucket = aws_s3_bucket.bucket.id
+  policy = aws_iam_policy_document.bucket_policy_document.id
 }
 
 // LambdaExecutionRole
@@ -152,8 +137,8 @@ EOF
 #   role       = aws_iam_role.role.name
 #   policy_arn = aws_iam_policy.policy.arn
 # }
-
-# resource "aws_lambda_function" "lambda" {
+# 
+# resource "aws_lambda_function" "reverse_string_handler" {
 #   filename      = "lambda_function_payload.zip"
 #   function_name = "lambda_function_name"
 #   role          = aws_iam_role.iam_for_lambda.arn
