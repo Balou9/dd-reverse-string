@@ -13,11 +13,13 @@ terraform {
 variable "s3_bucket_name" {
   type        = string
   description = "The name of the s3 bucket"
+  default = "reverse_string_bucket"
 }
 
 variable "reverse_string_handler_name" {
   type        = string
   description = "The lambda function name of the 'reverse string' handler"
+  default = "reverse_string_handler"
 
 }
 
