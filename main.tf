@@ -5,7 +5,7 @@ variable "s3_bucket_name" {
 }
 
 variable "reverse_string_handler_name" {
-  type = string
+  type        = string
   description = "The lambda function name of the 'reverse string' handler"
 
 }
@@ -32,11 +32,11 @@ resource "aws_s3_bucket" "bucket" {
 data "aws_iam_policy_document" "bucket_policy_document" {
 
   statement {
-    sid = "AllowOriginAccesIdentity"
+    sid    = "AllowOriginAccesIdentity"
     effect = "allow"
     principals {
-      type = "CanonicalUser"
-      identifiers = [ aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id ]
+      type        = "CanonicalUser"
+      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id]
     }
     actions = [
       "s3:Get*",
@@ -49,36 +49,36 @@ data "aws_iam_policy_document" "bucket_policy_document" {
   }
 
   statement {
-    sid = "AllowReverseStringHandlerGetObject"
+    sid    = "AllowReverseStringHandlerGetObject"
     effect = "allow"
     principals {
-      type = "AWS"
-      identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
+      type        = "AWS"
+      identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
-    actions = [ "s3:GetObject" ]
-    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
   }
 
   statement {
-    sid = "AllowReverseStringHandlerPutObject"
+    sid    = "AllowReverseStringHandlerPutObject"
     effect = "allow"
     principals {
-      type = "AWS"
-      identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
+      type        = "AWS"
+      identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
-    actions = [ "s3:PutObject" ]
-    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
   }
 
   statement {
-    sid = "AllowReverseStringHandlerListBucket"
+    sid    = "AllowReverseStringHandlerListBucket"
     effect = "allow"
     principals {
-      type = "AWS"
-      identifiers = [ aws_lambda_function.reverse_string_handler.arn ]
+      type        = "AWS"
+      identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
-    actions = [ "s3:ListBucket" ]
-    resources = [ "arn:aws:s3:::${var.s3_bucket_name}" ]
+    actions   = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::${var.s3_bucket_name}"]
   }
 
 }
@@ -91,13 +91,13 @@ resource "aws_s3_bucket_policy" "policy" {
 
 data "aws_iam_policy_document" "assume_role_policy_document" {
   statement {
-    sid = "AllowAssumeRoleByLambda"
+    sid    = "AllowAssumeRoleByLambda"
     effect = "Allow"
     principals {
-      type = "Service"
-      identifiers = [ "lambda.amazonaws.com" ]
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
     }
-    actions = [ "sts:AssumeRole" ]
+    actions = ["sts:AssumeRole"]
   }
 }
 
@@ -111,35 +111,35 @@ resource "aws_iam_role" "role" {
 data "aws_iam_policy_document" "reverse_string_handler_execution_policy" {
 
   statement {
-    sid = "AllowLogCreation"
+    sid    = "AllowLogCreation"
     effect = "Allow"
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = [ "arn:aws:logs:*:*:*" ]
+    resources = ["arn:aws:logs:*:*:*"]
   }
 
   statement {
-    sid = "AllowS3GetObject"
-    effect = "Allow"
-    actions = [ "s3:GetObject" ]
-    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
+    sid       = "AllowS3GetObject"
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
   }
 
   statement {
-    sid = "AllowS3PutObject"
-    effect = "Allow"
-    actions = [ "s3:PutObject" ]
-    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
+    sid       = "AllowS3PutObject"
+    effect    = "Allow"
+    actions   = ["s3:PutObject"]
+    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
   }
 
   statement {
-    sid = "AllowS3ListBucket"
-    effect = "Allow"
-    actions = [ "s3:ListBucket" ]
-    resources = [ "arn:aws:s3:::${var.s3_bucket_name}" ]
+    sid       = "AllowS3ListBucket"
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::${var.s3_bucket_name}"]
   }
 
 }
@@ -154,5 +154,5 @@ resource "aws_lambda_function" "reverse_string_handler" {
   function_name = "${var.reverse_string_handler_name}_handler"
   role          = aws_iam_role.role.arn
   handler       = "exports.handler"
-  runtime = "nodejs12.x"
+  runtime       = "nodejs12.x"
 }
