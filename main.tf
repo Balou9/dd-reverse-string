@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "assume_role_policy_document" {
       type = "Service"
       identifiers = [ "lambda.amazonaws.com" ]
     }
-    action = [ "sts:AssumeRole" ]
+    actions = [ "sts:AssumeRole" ]
   }
 }
 
@@ -101,12 +101,12 @@ resource "aws_iam_role" "role" {
 }
 
 
-data "aws_iam_policy" "reverse_string_handler_execution_policy" {
+data "aws_iam_policy_document" "reverse_string_handler_execution_policy" {
 
   statement {
     sid = "AllowLogCreation"
     effect = "Allow"
-    action = [
+    actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
@@ -117,29 +117,29 @@ data "aws_iam_policy" "reverse_string_handler_execution_policy" {
   statement {
     sid = "AllowS3GetObject"
     effect = "Allow"
-    action = [ "s3:GetObject" ]
-    resources = "arn:aws:s3:::${var.s3_bucket_name}/*"
+    actions = [ "s3:GetObject" ]
+    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
   }
 
   statement {
     sid = "AllowS3PutObject"
     effect = "Allow"
-    action = [ "s3:PutObject" ]
-    resources = "arn:aws:s3:::${var.s3_bucket_name}/*"
+    actions = [ "s3:PutObject" ]
+    resources = [ "arn:aws:s3:::${var.s3_bucket_name}/*" ]
   }
 
   statement {
     sid = "AllowS3ListBucket"
     effect = "Allow"
-    action = [ "s3:ListBucket" ]
-    resources = "arn:aws:s3:::${var.s3_bucket_name}"
+    actions = [ "s3:ListBucket" ]
+    resources = [ "arn:aws:s3:::${var.s3_bucket_name}" ]
   }
 
 }
 // LambdaExecutionPolicy
 resource "aws_iam_policy" "policy" {
   name   = "ReverseStringHandlerExecutionPolicy"
-  policy = data.aws_iam_policy.reverse_string_handler_execution_policy.id
+  policy = data.aws_iam_policy_document.reverse_string_handler_execution_policy.id
 }
 
 # resource "aws_lambda_function" "reverse_string_handler" {
