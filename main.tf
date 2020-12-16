@@ -1,4 +1,4 @@
-//
+// Backend configuration
 terraform {
   backend "remote" {
     organization = "etoo"
