@@ -1,3 +1,14 @@
+//
+terraform {
+  backend "remote" {
+    organization = "etoo"
+
+    workspaces {
+      name = "dd-reverse-strings"
+    }
+  }
+}
+
 // Declare variables set by github actions workflow
 variable "s3_bucket_name" {
   type        = string
