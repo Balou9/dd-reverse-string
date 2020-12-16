@@ -38,14 +38,20 @@ jobs:
       - name: Terraform validate
         run: terraform validate -no-color
 
+      - name: configure the environment
+        id: configure_environment
+        run: |
+          echo "STACK_NAME=reverse-strings" >> $GITHUB_ENV
+          echo "REVERSE_STRING_HANDLER_NAME=reverse-strings-handler" >> $GITHUB_ENV
+
       - name: Terraform Plan
         id: plan
         # if: github.event_name == 'pull_request'
         run: |
           terraform plan \
             -no-color \
-            -var="s3_bucket_name=reverse-string-bucket" \
-            -var="reverse_string_handler_name=reverse-string-handler"
+            -var="s3_bucket_name=$STACK_NAME" \
+            -var="reverse_string_handler_name=$REVERSE_STRING_HANDLER_NAME"
         continue-on-error: true
 
       - name: Terraform Plan Status
