@@ -57,8 +57,7 @@ jobs:
         run: |
           terraform plan \
             -no-color \
-            -var="s3_bucket_name=$ENVIRONMENT-$STACK_NAME-bucket" \
-            -var="reverse_string_handler_name=$ENVIRONMENT-$STACK_NAME-handler"
+            -var="stack_name=$ENVIRONMENT-$STACK_NAME" \
         continue-on-error: true
 
       - name: Terraform Plan Status
@@ -71,5 +70,4 @@ jobs:
           terraform apply \
             -auto-approve \
             -no-color \
-            -var="s3_bucket_name=$ENVIRONMENT-$STACK_NAME-bucket" \
-            -var="reverse_string_handler_name=$ENVIRONMENT-$STACK_NAME-handler"
+            -var="stack_name=$ENVIRONMENT-$STACK_NAME"

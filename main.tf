@@ -14,18 +14,13 @@ provider "aws" {
   region = "us-east-1"
 }
 // Declare variables set by github actions workflow
-variable "s3_bucket_name" {
-  type        = string
-  description = "The name of the s3 bucket"
-  # default = "reverse_string_bucket"
-}
 
-variable "reverse_string_handler_name" {
-  type        = string
-  description = "The lambda function name of the 'reverse string' handler"
-  # default = "reverse_string_handler"
-}
+variable "stack_name" {
 
+  type = "string"
+  description = "The stack-name"
+
+}
 
 // Origin Access Identity
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
@@ -38,7 +33,7 @@ resource "aws_s3_bucket" "bucket" {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
   }
-  bucket = "${var.s3_bucket_name}-bucket"
+  bucket = "${var.stack_name}-bucket"
 }
 
 // Bucket Policy
@@ -57,7 +52,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
     ]
     resources = [
       aws_s3_bucket.bucket.arn,
-      "arn:aws:s3:::${var.s3_bucket_name}/*"
+      "arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"
     ]
   }
 
@@ -69,7 +64,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
   }
 
   statement {
@@ -80,7 +75,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
   }
 
   statement {
@@ -91,7 +86,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${var.s3_bucket_name}"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}"]
   }
 
 }
@@ -138,21 +133,21 @@ data "aws_iam_policy_document" "reverse_string_handler_execution_policy" {
     sid       = "AllowS3GetObject"
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
   }
 
   statement {
     sid       = "AllowS3PutObject"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${var.s3_bucket_name}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
   }
 
   statement {
     sid       = "AllowS3ListBucket"
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${var.s3_bucket_name}"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}"]
   }
 
 }
@@ -169,7 +164,7 @@ resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
 
 resource "aws_lambda_function" "reverse_string_handler" {
   filename      = "dummy.zip"
-  function_name = "${var.reverse_string_handler_name}_handler"
+  function_name = "${var.stack_name}-handler"
   role          = aws_iam_role.role.arn
   handler       = "exports.handler"
   runtime       = "nodejs12.x"
