@@ -17,7 +17,7 @@ provider "aws" {
 
 variable "stack_name" {
 
-  type = "string"
+  type = string
   description = "The stack-name"
 
 }
