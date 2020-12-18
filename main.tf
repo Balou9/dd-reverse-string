@@ -14,21 +14,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-// Declare variables set by github actions workflow
-variable "reverse_string" {
-
-  type = string
-  description = "The string 'reverse-string' to use for resource naming of revelvant resources"
-
-}
-
-variable "string" {
-
-  type = string
-  description = "The string 'string' to use for resource naming of revelvant resources"
-
-}
-
 // Origin Access Identity
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
   comment = "dd-reverse-strings-oai"
@@ -40,7 +25,7 @@ resource "aws_s3_bucket" "string_bucket" {
     Key   = "dd-string:name"
     Value = "dd-string"
   }
-  bucket = "${var.string}-bucket"
+  bucket = "string-bucket"
 }
 
 // reverse_string Bucket
@@ -49,27 +34,10 @@ resource "aws_s3_bucket" "reverse_string_bucket" {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
   }
-  bucket = "${var.reverse_string}-bucket"
+  bucket = "reverse-string-bucket"
 }
 // String Bucket Policy
 data "aws_iam_policy_document" "string_bucket_policy_document" {
-
-  statement {
-    sid    = "AllowOriginAccesIdentity"
-    effect = "allow"
-    principals {
-      type        = "CanonicalUser"
-      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id]
-    }
-    actions = [
-      "s3:Get*",
-      "s3:List*"
-    ]
-    resources = [
-      aws_s3_bucket.string_bucket.arn,
-      "arn:aws:s3:::${aws_s3_bucket.string_bucket.bucket}/*"
-    ]
-  }
 
   statement {
     sid    = "AllowReverseStringHandlerGetObject"
@@ -86,23 +54,6 @@ data "aws_iam_policy_document" "string_bucket_policy_document" {
 
 // reverse_string Bucket Policy
 data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
-
-  statement {
-    sid    = "AllowOriginAccesIdentity"
-    effect = "allow"
-    principals {
-      type        = "CanonicalUser"
-      identifiers = [aws_cloudfront_origin_access_identity.origin_access_identity.s3_canonical_user_id]
-    }
-    actions = [
-      "s3:Get*",
-      "s3:List*"
-    ]
-    resources = [
-      aws_s3_bucket.reverse_string_bucket.arn,
-      "arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}/*"
-    ]
-  }
 
   statement {
     sid    = "AllowReverseStringHandlerPutObject"
@@ -207,7 +158,7 @@ resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
 // ReverseStringHandler
 resource "aws_lambda_function" "reverse_string_handler" {
   filename      = "reverse_string_lambda.zip"
-  function_name = "${var.reverse_string}-handler"
+  function_name = "reverse-string-handler"
   role          = aws_iam_role.role.arn
   handler       = "index.handler"
   runtime       = "nodejs12.x"
