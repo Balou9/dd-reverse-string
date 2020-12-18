@@ -206,10 +206,14 @@ resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
 
 // ReverseStringHandler
 resource "aws_lambda_function" "reverse_string_handler" {
+  filename      = "reverse_string_lambda.zip"
   function_name = "${var.reverse_string}-handler"
   role          = aws_iam_role.role.arn
   handler       = "index.handler"
   runtime       = "nodejs12.x"
+
+  source_code_hash = filebase64sha256("reverse_string_lambda.zip")
+
   environment {
     variables = {
       STRING_BUCKET_NAME = aws_s3_bucket.string_bucket.bucket

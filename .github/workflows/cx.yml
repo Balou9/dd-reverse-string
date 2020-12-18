@@ -23,6 +23,46 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+        - name: map branch 2 test/prod
+          run: |
+          if [[ ${{ github.ref }} == *main ]]; then
+          echo "ENVIRONMENT=test" >> $GITHUB_ENV # TODO: revert 2 prod
+          else
+          echo "ENVIRONMENT=test" >> $GITHUB_ENV
+          fi
+
+        - name: configure the environment
+          id: configure_environment
+          run: |
+          echo "REVERSE_STRING=$ENVIRONMENT-reverse-string" >> $GITHUB_ENV
+          echo "STRING=$ENVIRONMENT-string" >> $GITHUB_ENV
+          echo "REVERSE_STRING_HANDLER_NAME=$ENVIRONMENT-reverse-string-handler" >> $GITHUB_ENV
+
+      - name: deploy the reverse string handler
+        run: |
+          code_size=$( \
+            aws lambda get-function-configuration \
+              --function-name=${{ env.READ_PROFILE_HANDLER_NAME }} \
+              --query=CodeSize \
+
+         )
+          if ! git diff HEAD HEAD~1 --exit-code -s "./lambdas/string/reverse/*" || \
+             (( $code_size < 419 ));
+          then
+            cd ./lambdas/string/reverse
+            npm ci --only=prod
+            cd ../../..
+            npx @zeit/ncc@0.22.3 build \
+              --external=aws-sdk \
+              --out=./lambdas/string/bundles/reverse \
+              ./lambdas/string/reverse/index.js
+            zip -j /tmp/bundle.zip ./lambdas/string/bundles/reverse/index.js
+            aws lambda update-function-code \
+              --function-name=${{ env.REVERSE_STRING_HANDLER_NAME }} \
+              --publish \
+              --zip-file=fileb:///tmp/reverse_string_lambda.zip
+          fi
+
       - name: setup terraform
         uses: hashicorp/setup-terraform@v1.2.1
         with:
@@ -38,19 +78,6 @@ jobs:
       - name: Terraform validate
         run: terraform validate -no-color
 
-      - name: map branch 2 test/prod
-        run: |
-          if [[ ${{ github.ref }} == *main ]]; then
-            echo "ENVIRONMENT=test" >> $GITHUB_ENV # TODO: revert 2 prod
-          else
-            echo "ENVIRONMENT=test" >> $GITHUB_ENV
-          fi
-
-      - name: configure the environment
-        id: configure_environment
-        run: |
-          echo "REVERSE_STRING=reverse-string" >> $GITHUB_ENV
-          echo "STRING=string" >> $GITHUB_ENV
 
       - name: Terraform Plan
         id: plan
@@ -58,8 +85,8 @@ jobs:
         run: |
           terraform plan \
             -no-color \
-            -var="reverse_string=$ENVIRONMENT-$REVERSE_STRING" \
-            -var="string=$ENVIRONMENT-$STRING" 
+            -var="reverse_string=$REVERSE_STRING" \
+            -var="string=$STRING"
 
         continue-on-error: true
 
@@ -73,5 +100,5 @@ jobs:
           terraform apply \
             -auto-approve \
             -no-color \
-            -var="reverse_string=$ENVIRONMENT-$REVERSE_STRING" \
-            -var="string=$ENVIRONMENT-$STRING"
+            -var="reverse_string=$REVERSE_STRING" \
+            -var="string=$STRING"
