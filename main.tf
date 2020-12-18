@@ -167,7 +167,7 @@ resource "aws_lambda_function" "reverse_string_handler" {
 
   environment {
     variables = {
-      STRING_BUCKET_NAME = aws_s3_bucket.string_bucket.bucket
+      STRING_BUCKET_NAME         = aws_s3_bucket.string_bucket.bucket
       REVERSE_STRING_BUCKET_NAME = aws_s3_bucket.reversed_string_bucket.bucket
     }
   }
