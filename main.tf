@@ -209,6 +209,12 @@ resource "aws_lambda_function" "reverse_string_handler" {
   filename      = "dummy.zip"
   function_name = "${var.reverse_string}-handler"
   role          = aws_iam_role.role.arn
-  handler       = "exports.handler"
+  handler       = "index.handler"
   runtime       = "nodejs12.x"
+  environment {
+    variables = {
+      STRING_BUCKET_NAME = aws_s3_bucket.string_bucket.bucket
+      REVERSE_STRING_BUCKET_NAME = aws_s3_bucket.reverse_string_bucket.bucket
+    }
+  }
 }
