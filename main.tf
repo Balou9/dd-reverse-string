@@ -212,7 +212,7 @@ resource "aws_lambda_function" "reverse_string_handler" {
   handler       = "index.handler"
   runtime       = "nodejs12.x"
 
-  source_code_hash = filebase64sha256("reverse_string_lambda.zip")
+  # source_code_hash = filebase64sha256("reverse_string_lambda.zip")
 
   environment {
     variables = {
