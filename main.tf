@@ -206,7 +206,6 @@ resource "aws_iam_role_policy_attachment" "role_policy_attachment" {
 
 // ReverseStringHandler
 resource "aws_lambda_function" "reverse_string_handler" {
-  filename      = "dummy.zip"
   function_name = "${var.reverse_string}-handler"
   role          = aws_iam_role.role.arn
   handler       = "index.handler"
