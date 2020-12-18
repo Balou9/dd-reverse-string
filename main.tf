@@ -28,7 +28,7 @@ resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
 }
 
 // Bucket
-resource "aws_s3_bucket" "bucket" {
+resource "aws_s3_bucket" "reverse_string_bucket" {
   tags = {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
@@ -37,7 +37,7 @@ resource "aws_s3_bucket" "bucket" {
 }
 
 // Bucket Policy
-data "aws_iam_policy_document" "bucket_policy_document" {
+data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
 
   statement {
     sid    = "AllowOriginAccesIdentity"
@@ -51,8 +51,8 @@ data "aws_iam_policy_document" "bucket_policy_document" {
       "s3:List*"
     ]
     resources = [
-      aws_s3_bucket.bucket.arn,
-      "arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"
+      aws_s3_bucket.reverse_string_bucket.arn,
+      "arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}/*"
     ]
   }
 
@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}/*"]
   }
 
   statement {
@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}/*"]
   }
 
   statement {
@@ -86,14 +86,14 @@ data "aws_iam_policy_document" "bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}"]
   }
 
 }
 
 resource "aws_s3_bucket_policy" "policy" {
-  bucket = aws_s3_bucket.bucket.id
-  policy = data.aws_iam_policy_document.bucket_policy_document.id
+  bucket = aws_s3_bucket.reverse_string_bucket.id
+  policy = data.aws_iam_policy_document.reverse_string_bucket_policy_document.id
 }
 
 
@@ -133,21 +133,21 @@ data "aws_iam_policy_document" "reverse_string_handler_execution_policy" {
     sid       = "AllowS3GetObject"
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}/*"]
   }
 
   statement {
     sid       = "AllowS3PutObject"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}/*"]
   }
 
   statement {
     sid       = "AllowS3ListBucket"
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.bucket.bucket}"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reverse_string_bucket.bucket}"]
   }
 
 }
