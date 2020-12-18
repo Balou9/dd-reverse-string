@@ -25,18 +25,19 @@ jobs:
 
       - name: map branch 2 test/prod
         run: |
-        if [[ ${{ github.ref }} == *main ]]; then
-        echo "ENVIRONMENT=test" >> $GITHUB_ENV # TODO: revert 2 prod
-        else
-        echo "ENVIRONMENT=test" >> $GITHUB_ENV
-        fi
+          if [[ ${{ github.ref }} == *main ]]; then
+            echo "ENVIRONMENT=test" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=test" >> $GITHUB_ENV
+          fi
 
       - name: configure the environment
         id: configure_environment
         run: |
-        echo "REVERSE_STRING=$ENVIRONMENT-reverse-string" >> $GITHUB_ENV
-        echo "STRING=$ENVIRONMENT-string" >> $GITHUB_ENV
-        echo "REVERSE_STRING_HANDLER_NAME=$ENVIRONMENT-reverse-string-handler" >> $GITHUB_ENV
+
+          echo "REVERSE_STRING=$ENVIRONMENT-reverse-string" >> $GITHUB_ENV
+          echo "STRING=$ENVIRONMENT-string" >> $GITHUB_ENV
+          echo "REVERSE_STRING_HANDLER_NAME=$ENVIRONMENT-reverse-string-handler" >> $GITHUB_ENV
 
       - name: deploy the reverse string handler
         run: |
