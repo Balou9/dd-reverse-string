@@ -81,12 +81,12 @@ data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
 
 resource "aws_s3_bucket_policy" "string_policy" {
   bucket = aws_s3_bucket.string_bucket.id
-  policy = data.aws_iam_policy_document.string_bucket_policy_document.id
+  policy = data.aws_iam_policy_document.string_bucket_policy_document.policy
 }
 
 resource "aws_s3_bucket_policy" "reverse_string_policy" {
   bucket = aws_s3_bucket.reversed_string_bucket.id
-  policy = data.aws_iam_policy_document.reverse_string_bucket_policy_document.id
+  policy = data.aws_iam_policy_document.reverse_string_bucket_policy_document.policy
 }
 
 
