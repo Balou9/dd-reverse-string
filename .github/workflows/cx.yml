@@ -45,7 +45,7 @@ jobs:
             aws lambda get-function-configuration \
               --function-name=${{ env.REVERSE_STRING_HANDLER_NAME }} \
               --query=CodeSize \
-         )
+          )
           if ! git diff HEAD HEAD~1 --exit-code -s "./lambdas/string/reverse/*" || \
              (( $code_size < 419 ));
           then
