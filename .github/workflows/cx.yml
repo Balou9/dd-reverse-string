@@ -46,7 +46,7 @@ jobs:
               --function-name=${{ env.REVERSE_STRING_HANDLER_NAME }} \
               --query=CodeSize \
           )
-          if ! git diff HEAD HEAD~1 --exit-code -s "./lambdas/string/reverse/*" || \
+          if ! git diff HEAD HEAD~1 -s --exit-code "./lambdas/string/reverse/*" || \
              (( $code_size < 419 ));
           then
             cd ./lambdas/string/reverse
@@ -56,7 +56,7 @@ jobs:
               --external=aws-sdk \
               --out=./lambdas/string/bundles/reverse \
               ./lambdas/string/reverse/index.js
-            zip -j /tmp/bundle.zip ./lambdas/string/bundles/reverse/index.js
+            zip -j /tmp/reverse_string_lambda.zip ./lambdas/string/bundles/reverse/index.js
             aws lambda update-function-code \
               --function-name=${{ env.REVERSE_STRING_HANDLER_NAME }} \
               --publish \
