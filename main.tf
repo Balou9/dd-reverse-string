@@ -34,7 +34,7 @@ resource "aws_s3_bucket" "reversed_string_bucket" {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
   }
-  bucket = "reversed-string-bucket"
+  bucket = "rev-string-bucket"
 }
 // String Bucket Policy
 data "aws_iam_policy_document" "string_bucket_policy_document" {
