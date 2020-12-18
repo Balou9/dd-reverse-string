@@ -39,5 +39,5 @@ if (!process.env.STRING_BUCKET_NAME) {
 }
 
 if (!process.env.REVERSE_STRING_BUCKET_NAME) {
-  throw new Error("missing required env var STRING_BUCKET_NAME");
+  throw new Error("missing required env var REVERSE_STRING_BUCKET_NAME");
 }
