@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "string_bucket" {
 }
 
 // reverse_string Bucket
-resource "aws_s3_bucket" "reverse_string_bucket" {
+resource "aws_s3_bucket" "revers_string_bucket" {
   tags = {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
