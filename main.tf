@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "string_bucket_policy_document" {
 
   statement {
     sid    = "AllowReverseStringHandlerGetObject"
-    effect = "allow"
+    effect = "Allow"
     principals {
       type        = "AWS"
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
 
   statement {
     sid    = "AllowReverseStringHandlerPutObject"
-    effect = "allow"
+    effect = "Allow"
     principals {
       type        = "AWS"
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
 
   statement {
     sid    = "AllowReverseStringHandlerListBucket"
-    effect = "allow"
+    effect = "Allow"
     principals {
       type        = "AWS"
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
