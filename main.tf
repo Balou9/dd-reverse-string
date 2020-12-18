@@ -25,7 +25,7 @@ resource "aws_s3_bucket" "string_bucket" {
     Key   = "dd-string:name"
     Value = "dd-string"
   }
-  bucket = "string-bucket"
+  bucket = "plain-string-bucket"
 }
 
 // reverse_string Bucket
