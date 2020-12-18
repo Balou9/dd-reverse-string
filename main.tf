@@ -29,12 +29,12 @@ resource "aws_s3_bucket" "string_bucket" {
 }
 
 // reverse_string Bucket
-resource "aws_s3_bucket" "revers_string_bucket" {
+resource "aws_s3_bucket" "reversed_string_bucket" {
   tags = {
     Key   = "dd-reverse-string:name"
     Value = "dd-reverse-string"
   }
-  bucket = "reverse-string-bucket"
+  bucket = "reversed-string-bucket"
 }
 // String Bucket Policy
 data "aws_iam_policy_document" "string_bucket_policy_document" {
@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.revers_string_bucket.bucket}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reversed_string_bucket.bucket}/*"]
   }
 
   statement {
@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
       identifiers = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.revers_string_bucket.bucket}"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reversed_string_bucket.bucket}"]
   }
 
 }
@@ -85,7 +85,7 @@ resource "aws_s3_bucket_policy" "string_policy" {
 }
 
 resource "aws_s3_bucket_policy" "reverse_string_policy" {
-  bucket = aws_s3_bucket.revers_string_bucket.id
+  bucket = aws_s3_bucket.reversed_string_bucket.id
   policy = data.aws_iam_policy_document.reverse_string_bucket_policy_document.id
 }
 
@@ -115,14 +115,14 @@ data "aws_iam_policy_document" "reverse_string_handler_execution_policy" {
     sid       = "AllowS3PutObject"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.revers_string_bucket.bucket}/*"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reversed_string_bucket.bucket}/*"]
   }
 
   statement {
     sid       = "AllowS3ListBucket"
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.revers_string_bucket.bucket}"]
+    resources = ["arn:aws:s3:::${aws_s3_bucket.reversed_string_bucket.bucket}"]
   }
 
 }
@@ -168,7 +168,7 @@ resource "aws_lambda_function" "reverse_string_handler" {
   environment {
     variables = {
       STRING_BUCKET_NAME = aws_s3_bucket.string_bucket.bucket
-      REVERSE_STRING_BUCKET_NAME = aws_s3_bucket.revers_string_bucket.bucket
+      REVERSE_STRING_BUCKET_NAME = aws_s3_bucket.reversed_string_bucket.bucket
     }
   }
 }
