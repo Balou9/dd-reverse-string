@@ -8,6 +8,7 @@ terraform {
       name = "dd-reverse-strings"
     }
   }
+
 }
 
 provider "aws" {
@@ -173,4 +174,9 @@ resource "aws_lambda_function" "reverse_string_handler" {
       REVERSE_STRING_BUCKET_NAME = aws_s3_bucket.reversed_string_bucket.bucket
     }
   }
+}
+
+resource "aws_cloudwatch_log_group" "reverse_string_handler_log" {
+  name = "aws/lambda/reverse-string-handler"
+  retention_in_days = 7
 }
