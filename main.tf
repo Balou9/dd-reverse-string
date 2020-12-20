@@ -177,6 +177,6 @@ resource "aws_lambda_function" "reverse_string_handler" {
 }
 
 resource "aws_cloudwatch_log_group" "reverse_string_handler_log" {
-  name              = "reverse-string-handler"
+  name              = "/aws/lambda/reverse-string-handler"
   retention_in_days = 7
 }
