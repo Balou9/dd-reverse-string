@@ -35,10 +35,10 @@ resource "aws_s3_bucket" "reversed_string_bucket" {
 data "aws_iam_policy_document" "string_bucket_policy_document" {
 
   statement {
-    
+
     principals {
       type        = "AWS"
-      identifiers = [aws_lambda_function.reverse_string_handler.arn]
+      identifiers = [aws_iam_role.role.arn]
     }
 
     sid    = "AllowReverseStringHandlerGetObject"
@@ -53,23 +53,26 @@ data "aws_iam_policy_document" "string_bucket_policy_document" {
 data "aws_iam_policy_document" "reverse_string_bucket_policy_document" {
 
   statement {
-    sid    = "AllowReverseStringHandlerPutObject"
-    effect = "Allow"
+
     principals {
       type        = "AWS"
-      identifiers = [aws_lambda_function.reverse_string_handler.arn]
+      identifiers = [aws_iam_role.role.arn]
     }
+
+    sid    = "AllowReverseStringHandlerPutObject"
+    effect = "Allow"
     actions   = ["s3:PutObject"]
     resources = ["arn:aws:s3:::${aws_s3_bucket.reversed_string_bucket.bucket}/*"]
   }
 
   statement {
-    sid    = "AllowReverseStringHandlerListBucket"
-    effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = [aws_lambda_function.reverse_string_handler.arn]
+      identifiers = [aws_iam_role.role.arn]
     }
+
+    sid    = "AllowReverseStringHandlerListBucket"
+    effect = "Allow"
     actions   = ["s3:ListBucket"]
     resources = ["arn:aws:s3:::${aws_s3_bucket.reversed_string_bucket.bucket}"]
   }
@@ -125,13 +128,15 @@ data "aws_iam_policy_document" "reverse_string_handler_execution_policy" {
 }
 
 data "aws_iam_policy_document" "assume_role_policy_document" {
+
   statement {
-    sid    = "AllowAssumeRoleByLambda"
-    effect = "Allow"
     principals {
       type        = "Service"
       identifiers = ["lambda.amazonaws.com"]
     }
+
+    sid    = "AllowAssumeRoleByLambda"
+    effect = "Allow"
     actions = ["sts:AssumeRole"]
   }
 }
