@@ -35,6 +35,9 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
+      - name: Terraform validate
+        run: terraform validate -json
+
       - name: Terraform Plan
         id: plan
         run: |

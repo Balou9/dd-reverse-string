@@ -14,11 +14,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-// Origin Access Identity
-resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "dd-reverse-strings-oai"
-}
-
 // string Bucket
 resource "aws_s3_bucket" "string_bucket" {
   tags = {
@@ -40,11 +35,12 @@ resource "aws_s3_bucket" "reversed_string_bucket" {
 data "aws_iam_policy_document" "string_bucket_policy_document" {
 
   statement {
+    principals {
+      type        = "AWS"
+      identifiers = [aws_lambda_function.reverse_string_handler.arn]
+    }
     sid    = "AllowReverseStringHandlerGetObject"
     effect = "Allow"
-    principals {
-      "AWS" = [aws_lambda_function.reverse_string_handler.arn]
-    }
     actions   = ["s3:GetObject"]
     resources = ["arn:aws:s3:::${aws_s3_bucket.string_bucket.bucket}/*"]
   }
