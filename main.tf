@@ -43,8 +43,7 @@ data "aws_iam_policy_document" "string_bucket_policy_document" {
     sid    = "AllowReverseStringHandlerGetObject"
     effect = "Allow"
     principals {
-      type        = "AWS"
-      identifiers = [aws_lambda_function.reverse_string_handler.arn]
+      "AWS" = [aws_lambda_function.reverse_string_handler.arn]
     }
     actions   = ["s3:GetObject"]
     resources = ["arn:aws:s3:::${aws_s3_bucket.string_bucket.bucket}/*"]
