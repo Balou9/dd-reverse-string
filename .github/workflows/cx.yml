@@ -55,3 +55,9 @@ jobs:
           terraform apply \
             -auto-approve \
             -no-color
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: copy file to bucket
+        run: |
+          aws s3 cp string.json s3://plain-string-bucket/
