@@ -18,8 +18,8 @@ module.exports.handler = async function handler (event, context) {
       "headers": {
         "content-type": "application/json",
       },
-      "body": JSON.stringify(payload)
-      
+      "body": JSON.stringify(payload, event)
+
     }
 
   } catch (err) {

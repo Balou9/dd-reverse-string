@@ -67,7 +67,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-          
+
       - name: copy file to bucket
         run: |
           aws s3 cp string.json s3://plain-string-bucket/
+
+      -
+        run: |
+          source <(curl -sSf https://raw.githubusercontent.com/chiefbiiko/bashert/v1.0.1/bashert.sh)
+          source ./test_suite.sh
+          test_reverse_string_200
