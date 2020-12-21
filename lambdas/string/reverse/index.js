@@ -8,7 +8,7 @@ module.exports.handler = async function handler (event, context) {
   try {
 
     const payload = await s3.getObject({
-      Key: event.pathParameters.string,
+      Key: "string.json",
       Bucket: process.env.STRING_BUCKET_NAME
     }).promise()
 
@@ -18,7 +18,7 @@ module.exports.handler = async function handler (event, context) {
       "headers": {
         "content-type": "application/json",
       },
-      "body": JSON.stringify(payload, event)
+      "body": JSON.stringify(payload)
 
     }
 
