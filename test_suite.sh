@@ -5,5 +5,7 @@ test_reverse_string_200() {
 
   aws lambda invoke --function-name reverse-string-handler $resp_body
 
-  cat $resp_body
+  cat $resp_body jq ".statusCode"
+  cat $resp_body jq ".Body"
+
 }
