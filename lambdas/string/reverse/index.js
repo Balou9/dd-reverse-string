@@ -7,10 +7,12 @@ module.exports.handler = async function handler (event, context) {
 
   try {
 
-    const payload = await s3.getObject({
+    const str = await s3.getObject({
       Key: "string.json",
       Bucket: process.env.STRING_BUCKET_NAME
     }).promise()
+
+    
 
     return {
 
