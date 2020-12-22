@@ -9,7 +9,7 @@ module.exports.handler = async function handler (event, context) {
       Key: "string.json",
       Bucket: process.env.STRING_BUCKET_NAME
     }).promise()
-    var reversed_string = payload.body.toString().split("").reverse().join("")
+    var reversed_string = payload.Body.toString().split("").reverse().join("")
     await s3.putObject({
       Key: "reversed_string.json",
       Bucket: process.env.REVERSE_STRING_BUCKET_NAME,
