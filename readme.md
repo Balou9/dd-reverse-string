@@ -1,6 +1,6 @@
 # reverse_strings
 
-[![cx](https://github.com/Balou9/dd-reverse-strings/workflows/cx/badge.svg)](https://github.com/Balou9/dd-reverse_strings/actions)
+[![cx](https://github.com/Balou9/dd-reverse-string/workflows/cx/badge.svg)](https://github.com/Balou9/dd-reverse_string/actions)
 
 ## Workflow Trigger
 ```
