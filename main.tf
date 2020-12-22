@@ -17,19 +17,11 @@ provider "aws" {
 
 // string Bucket
 resource "aws_s3_bucket" "string_bucket" {
-  tags = {
-    Key   = "dd-string:name"
-    Value = "dd-string"
-  }
   bucket = "plain-string-bucket"
 }
 
 // reverse_string Bucket
 resource "aws_s3_bucket" "reversed_string_bucket" {
-  tags = {
-    Key   = "dd-reverse-string:name"
-    Value = "dd-reverse-string"
-  }
   bucket = "rev-string-bucket"
 }
 // String Bucket Policy
