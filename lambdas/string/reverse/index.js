@@ -1,5 +1,5 @@
 const { S3 } = require("aws-sdk");
-const string_bucket_s3 = new S3({
+const s3 = new S3({
   apiVersion: "2006-03-01"
 })
 
@@ -15,7 +15,7 @@ module.exports.handler = async function handler (event, context) {
       Bucket: process.env.REVERSE_STRING_BUCKET_NAME,
       Body: reversed_string
     }).promise()
-    
+
     return { "statusCode": 200 }
   } catch (err) {
     return { "statusCode": 500 }
