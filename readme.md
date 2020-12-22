@@ -1,4 +1,4 @@
-# reverse_strings
+# dd-reverse_string
 
 [![cx](https://github.com/Balou9/dd-reverse-string/workflows/cx/badge.svg)](https://github.com/Balou9/dd-reverse_string/actions)
 
