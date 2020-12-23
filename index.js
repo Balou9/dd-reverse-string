@@ -6,18 +6,28 @@ function reverse (str) {
 }
 
 module.exports.handler = async function (event, context) {
-  const response = await s3.getObject({
-    Key: event.from,
-    Bucket: process.env.STRING_BUCKET_NAME
-  }).promise()
+  console.log("event", event)
+  try {
+    if (!event.from || !event.to) {
+      return { statusCode: 400 }
+    }
 
-  const reversed = reverse(response.Body.toString())
+    const response = await s3.getObject({
+      Key: event.from,
+      Bucket: process.env.STRING_BUCKET_NAME
+    }).promise()
 
-  await s3.putObject({
-    Key: event.to,
-    Bucket: process.env.REVERSE_STRING_BUCKET_NAME,
-    Body: reversed
-  }).promise()
+    const reversed = reverse(response.Body.toString())
 
-  return { statusCode: 200 }
+    await s3.putObject({
+      Key: event.to,
+      Bucket: process.env.REVERSE_STRING_BUCKET_NAME,
+      Body: reversed
+    }).promise()
+
+    return { statusCode: 200 }
+  } catch (err) {
+    return { statusCode: 500 }
+  }
+  
 }

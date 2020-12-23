@@ -17,7 +17,7 @@ test_reverse_string_400() {
 
   aws lambda invoke \
   --function-name reverse-string-handler \
-  --payload '{"origin": "string.json", "destination": "reversed_string.json"}' \
+  --payload '{}' \
   $resp_body
 
   status=$(cat $resp_body | jq .statusCode)
