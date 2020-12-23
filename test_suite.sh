@@ -30,7 +30,7 @@ test_reverse_string_500() {
 
   aws lambda invoke \
   --function-name reverse-string-handler \
-  --payload '{"^\{,": "", "<>%&@": ""}' \
+  --payload '{"^a)f": "", "e>": ""}' \
   $resp_body
 
   status=$(cat $resp_body | jq .statusCode)
