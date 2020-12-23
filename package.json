@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "pretty": "npx standard --fix ./index.js"
+  },
+  "dependencies": {
+    "aws-sdk": "2.788.0"
+  }
+}
