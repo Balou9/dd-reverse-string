@@ -7,14 +7,14 @@ function reverse (str) {
 
 module.exports.handler = async function (event, context) {
   const response = await s3.getObject({
-    Key: 'string.json',
+    Key: event.from,
     Bucket: process.env.STRING_BUCKET_NAME
   }).promise()
 
   const reversed = reverse(response.Body.toString())
 
   await s3.putObject({
-    Key: 'reversed_string.json',
+    Key: event.to,
     Bucket: process.env.REVERSE_STRING_BUCKET_NAME,
     Body: reversed
   }).promise()
