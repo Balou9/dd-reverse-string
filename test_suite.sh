@@ -23,3 +23,16 @@ test_reverse_string_400() {
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 400
 }
+
+test_reverse_string_500() {
+  printf "test_reverse_string_500\n"
+  resp_body="$(mktemp)"
+
+  aws lambda invoke \
+  --function-name reverse-string-handler \
+  --payload '{"^\{,": "", "<>%&@": ""}' \
+  $resp_body
+
+  status=$(cat $resp_body | jq .statusCode)
+  assert_equal $status 500
+}

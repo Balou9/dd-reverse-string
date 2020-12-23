@@ -73,3 +73,4 @@ jobs:
           source ./test_suite.sh
           test_reverse_string_200
           test_reverse_string_400
+          test_reverse_string_500
