@@ -21,7 +21,7 @@ jobs:
 
       - name: bundle the reverse_string_handler
         run: |
-          zip -j reverse_string_lambda.zip .index.js
+          zip -j reverse_string_lambda.zip index.js
 
       - name: setup terraform
         uses: hashicorp/setup-terraform@v1.2.1
