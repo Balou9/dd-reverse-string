@@ -3,9 +3,10 @@ test_reverse_string_200() {
   resp_body="$(mktemp)"
 
   aws lambda invoke \
-  --function-name reverse-string-handler \
-  --payload '{"from": "string.json", "to": "reversed_string.json"}' \
-  $resp_body
+    --function-name reverse-string-handler \
+    --payload '{"from": "string.json", "to": "reversed_string.json"}' \
+    $resp_body \
+  > /dev/null
 
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 200
@@ -16,9 +17,10 @@ test_reverse_string_400() {
   resp_body="$(mktemp)"
 
   aws lambda invoke \
-  --function-name reverse-string-handler \
-  --payload '{}' \
-  $resp_body
+    --function-name reverse-string-handler \
+    --payload '{}' \
+    $resp_body \
+  > /dev/null
 
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 400
@@ -29,8 +31,8 @@ test_reverse_string_500() {
   resp_body="$(mktemp)"
 
   aws lambda invoke \
-  --function-name reverse-string-handler \
-  --payload '{"^a)f": "", "e>": ""}' \
+    --function-name reverse-string-handler \
+    --payload '{"from":"^a)f","to":"e>"}' \
   $resp_body
 
   status=$(cat $resp_body | jq .statusCode)
