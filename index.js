@@ -6,7 +6,6 @@ function reverse (str) {
 }
 
 module.exports.handler = async function (event, context) {
-  console.log("event", event)
   try {
     if (!event.from || !event.to) {
       return { statusCode: 400 }
@@ -29,5 +28,5 @@ module.exports.handler = async function (event, context) {
   } catch (err) {
     return { statusCode: 500 }
   }
-  
+
 }

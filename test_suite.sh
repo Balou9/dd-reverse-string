@@ -4,7 +4,7 @@ test_reverse_string_200() {
 
   aws lambda invoke \
     --function-name reverse-string-handler \
-    --payload '{"from": "string.json", "to": "reversed_string.json"}' \
+    --payload '{"from": "example.json", "to": "reversed_example.json"}' \
     $resp_body \
   > /dev/null
 
@@ -33,7 +33,8 @@ test_reverse_string_500() {
   aws lambda invoke \
     --function-name reverse-string-handler \
     --payload '{"from":"^a)f","to":"e>"}' \
-  $resp_body
+  $resp_body \
+  > /dev/null
 
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 500
