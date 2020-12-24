@@ -16,8 +16,10 @@ test_reverse_string_204() {
   aws s3api get-object \
     --bucket reversed-string-bucket \
     --key reversed_example.json \
-    $reversed_example
+    $reversed_example \
   > /dev/null
+
+  cat $reversed_example
 
   assert_equal $reversed_example 'efil si llab'
 }
