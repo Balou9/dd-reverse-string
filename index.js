@@ -24,9 +24,8 @@ module.exports.handler = async function (event, context) {
       Body: reversed
     }).promise()
 
-    return { statusCode: 200 }
+    return { statusCode: 204 }
   } catch (err) {
     return { statusCode: 500 }
   }
-
 }

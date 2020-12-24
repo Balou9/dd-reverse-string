@@ -1,15 +1,15 @@
-test_reverse_string_200() {
-  printf "test_reverse_string_200\n"
+test_reverse_string_204() {
+  printf "test_reverse_string_204\n"
   resp_body="$(mktemp)"
 
   aws lambda invoke \
     --function-name reverse-string-handler \
-    --payload '{"from": "example.json", "to": "reversed_example.json"}' \
+    --payload '{"from":"example.json","to":"reversed_example.json"}' \
     $resp_body \
   > /dev/null
 
   status=$(cat $resp_body | jq .statusCode)
-  assert_equal $status 200
+  assert_equal $status 204
 }
 
 test_reverse_string_400() {
