@@ -21,9 +21,9 @@ test_reverse_string_204() {
   > /dev/null
 
 
-  cat $reversed_example
-  reversed_string=$(cat $reversed_example)
-  cat $reversed_string
+  echo $reversed_example
+  reversed_string=$(echo $reversed_example)
+  echo $reversed_string
 
   assert_equal $reversed_string 'efil si llaB'
 }
