@@ -12,9 +12,14 @@ test_reverse_string_204() {
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 204
 
-  aws s3api get-object --bucket reversed-string-bucket --key reversed_example.json $reversed_example
+  printf "test_reversed_string\n"
+  aws s3api get-object \
+    --bucket reversed-string-bucket \
+    --key reversed_example.json \
+    $reversed_example
+  > /dev/null
 
-  cat $reversed_example
+  assert_equal $reversed_example 'efil si llab'
 }
 
 test_reverse_string_400() {
