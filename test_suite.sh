@@ -21,7 +21,7 @@ test_reverse_string_204() {
 
   cat $reversed_example
 
-  assert_equal $reversed_example 'efil si llab'
+  assert_equal $reversed_example 'efil si llaB'
 }
 
 test_reverse_string_400() {
