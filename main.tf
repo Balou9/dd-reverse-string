@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "string_bucket" {
 
 // reverse_string Bucket
 resource "aws_s3_bucket" "reversed_string_bucket" {
-  bucket = "rev-string-bucket"
+  bucket = "reversed-string-bucket"
 }
 // String Bucket Policy
 data "aws_iam_policy_document" "string_bucket_policy_document" {

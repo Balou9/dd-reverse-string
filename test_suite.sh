@@ -1,6 +1,7 @@
 test_reverse_string_204() {
   printf "test_reverse_string_204\n"
   resp_body="$(mktemp)"
+  reversed_example="$(mktemp)"
 
   aws lambda invoke \
     --function-name reverse-string-handler \
@@ -10,6 +11,10 @@ test_reverse_string_204() {
 
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 204
+
+  aws s3api get-object --bucket reversed-string-bucket --key reversed_example.json $reversed_example
+
+  cat $reversed_example
 }
 
 test_reverse_string_400() {
