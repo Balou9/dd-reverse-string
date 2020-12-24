@@ -20,7 +20,7 @@ test_reverse_string_204() {
     $reversed_example \
   > /dev/null
 
-  reversed_string='value=$(<$reversed_example)'
+  reversed_string=$(<$reversed_example)
 
   cat $reversed_string
 
