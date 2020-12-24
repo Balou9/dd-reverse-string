@@ -3,6 +3,7 @@ test_reverse_string_204() {
   resp_body="$(mktemp)"
   reversed_example="$(mktemp)"
 
+
   aws lambda invoke \
     --function-name reverse-string-handler \
     --payload '{"from":"example.json","to":"reversed_example.json"}' \
@@ -19,9 +20,11 @@ test_reverse_string_204() {
     $reversed_example \
   > /dev/null
 
-  cat $reversed_example
+  reversed_string='value=$(<$reversed_example)'
 
-  assert_match $reversed_example 'efil si llaB'
+  cat $reversed_string
+
+  assert_equal $reversed_string 'efil si llaB'
 }
 
 test_reverse_string_400() {
