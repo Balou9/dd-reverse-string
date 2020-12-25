@@ -13,7 +13,6 @@ test_reverse_string_204() {
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 204
 
-  printf "test_reversed_string\n"
   aws s3api get-object \
     --bucket reversed-string-bucket \
     --key reversed_example.json \
@@ -21,7 +20,7 @@ test_reverse_string_204() {
   > /dev/null
 
   if grep -xq "efil si llaB" "$reversed_example"; then
-    printf "The string was being reverted"
+    printf "The string has been reversed\n"
   fi
 }
 
