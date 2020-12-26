@@ -4,7 +4,7 @@ test_reverse_string_204() {
 
   aws lambda invoke \
     --function-name reverse-string-handler \
-    --payload '{"from":"example.json","to":"reversed_example.json"}' \
+    --payload '{"from":"example.txt","to":"reversed_example.txt"}' \
     $resp_body \
   > /dev/null
 
@@ -22,15 +22,13 @@ test_string_has_been_reversed() {
     --key example.json \
     $example
   > /dev/null
-
-  bash_reversed=$(cat $example | rev)
-
   aws s3api get-object \
     --bucket reversed-string-bucket \
     --key reversed_example.json \
     $reversed_example \
   > /dev/null
 
+  bash_reversed=$(cat $example | rev)
   if grep -xq "$bash_reversed" "$reversed_example"; then
     printf "The string has been reversed\n"
   fi
