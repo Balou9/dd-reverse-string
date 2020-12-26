@@ -3,7 +3,6 @@ test_reverse_string_204() {
   resp_body="$(mktemp)"
   reversed_example="$(mktemp)"
 
-
   aws lambda invoke \
     --function-name reverse-string-handler \
     --payload '{"from":"example.json","to":"reversed_example.json"}' \

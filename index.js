@@ -1,5 +1,5 @@
-const { S3 } = require('aws-sdk')
-const s3 = new S3({ apiVersion: '2006-03-01' })
+const { S3 } = require("@aws-sdk/client-s3");
+const s3 = new S3({ apiVersion: "2006-03-01" })
 
 function reverse (str) {
   return str.split('').reverse().join('')

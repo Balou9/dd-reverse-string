@@ -3,6 +3,6 @@
     "pretty": "npx standard --fix ./index.js"
   },
   "dependencies": {
-    "aws-sdk": "2.788.0"
+    "@aws-sdk/client-s3": "3.1.0"
   }
 }
