@@ -23,10 +23,7 @@ test_string_has_been_reversed() {
     $example
   > /dev/null
 
-  copy=${example}
-  len=${#copy}
-  for((i=$len-1;i>=0;i--)); do rev="$rev${copy:$i:1}"; done
-
+  bash_reversed=$(cat $example | rev)
 
   aws s3api get-object \
     --bucket reversed-string-bucket \
@@ -34,9 +31,7 @@ test_string_has_been_reversed() {
     $reversed_example \
   > /dev/null
 
-  echo "bash reversed example: $rev, handler reversed example: $reversed_example"
-
-  if grep -xq "$rev" "$reversed_example"; then
+  if grep -xq "$bash_reversed" "$reversed_example"; then
     printf "The string has been reversed\n"
   fi
 }
