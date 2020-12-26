@@ -1,7 +1,6 @@
 test_reverse_string_204() {
   printf "test_reverse_string_204\n"
   resp_body="$(mktemp)"
-  reversed_example="$(mktemp)"
 
   aws lambda invoke \
     --function-name reverse-string-handler \
@@ -11,6 +10,22 @@ test_reverse_string_204() {
 
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 204
+}
+
+test_string_has_been_reversed() {
+  printf "test_string_has_been_reversed\n"
+  example="$(mktemp)"
+  reversed_example="$(mktemp)"
+
+  aws s3api get-object \
+    --bucket string_bucket \
+    --key example.json \
+    $example
+  > /dev/null
+
+  copy=${example}
+  len=${#copy}
+  for((i=$len-1;i>=0;i--)); do rev="$rev${copy:$i:1}"; done
 
   aws s3api get-object \
     --bucket reversed-string-bucket \
@@ -18,7 +33,7 @@ test_reverse_string_204() {
     $reversed_example \
   > /dev/null
 
-  if grep -xq "efil si llaB" "$reversed_example"; then
+  if grep -xq "$rev" "$reversed_example"; then
     printf "The string has been reversed\n"
   fi
 }

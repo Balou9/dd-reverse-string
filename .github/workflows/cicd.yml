@@ -72,5 +72,6 @@ jobs:
           source <(curl -sSf https://raw.githubusercontent.com/chiefbiiko/bashert/v1.0.1/bashert.sh)
           source ./test_suite.sh
           test_reverse_string_204
+          test_string_has_been_reversed
           test_reverse_string_400
           test_reverse_string_500
