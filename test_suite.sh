@@ -34,7 +34,7 @@ test_string_has_been_reversed() {
     $reversed_example \
   > /dev/null
 
-  cat $rev $reversed_example
+  echo "bash reversed example: $rev, handler reversed example: $reversed_example"
 
   if grep -xq "$rev" "$reversed_example"; then
     printf "The string has been reversed\n"
