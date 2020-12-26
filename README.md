@@ -6,7 +6,7 @@
 
 The goal is to create a Lambda Handler which performs a string reversion. The handler reads the string from one S3 bucket, flips the string, and then stores it in another S3 bucket. The use of Terraform is mandatory.
 
-## CI/CD Workflow
+## CD/CI Workflow
 
 Therefore I created a workflow which gets triggered on push to the main branch. It consists of a deployment job `deploy` and a test job `test`.
 The workflow runs the jobs in sequence, first the `deploy` and then the `test` job, to ensure that the test job tests against the new deployment.
