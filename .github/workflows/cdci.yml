@@ -65,7 +65,7 @@ jobs:
 
       - name: copy file to bucket
         run: |
-          aws s3 cp example.json s3://plain-string-bucket/
+          aws s3 cp example.txt s3://plain-string-bucket/
 
       - name: test the reverse-string-handler
         run: |
