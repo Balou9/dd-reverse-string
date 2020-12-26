@@ -27,11 +27,14 @@ test_string_has_been_reversed() {
   len=${#copy}
   for((i=$len-1;i>=0;i--)); do rev="$rev${copy:$i:1}"; done
 
+
   aws s3api get-object \
     --bucket reversed-string-bucket \
     --key reversed_example.json \
     $reversed_example \
   > /dev/null
+
+  cat $rev $reversed_example
 
   if grep -xq "$rev" "$reversed_example"; then
     printf "The string has been reversed\n"
