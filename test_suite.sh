@@ -18,7 +18,7 @@ test_string_has_been_reversed() {
   reversed_example="$(mktemp)"
 
   aws s3api get-object \
-    --bucket plain-string_bucket \
+    --bucket plain-string-bucket \
     --key example.json \
     $example
   > /dev/null
