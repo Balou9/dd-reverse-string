@@ -1,4 +1,4 @@
-name: cicd
+name: cdci
 
 on: push
 

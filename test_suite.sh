@@ -28,8 +28,8 @@ test_string_has_been_reversed() {
     $reversed_example \
   > /dev/null
 
-  bash_reversed=$(cat $example | rev)
-  if grep -xq "$bash_reversed" "$reversed_example"; then
+  bash_reversed_example=$(cat $example | rev)
+  if grep -xq "$bash_reversed_example" "$reversed_example"; then
     printf "The string has been reversed\n"
   fi
 }
