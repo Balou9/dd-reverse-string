@@ -37,7 +37,7 @@ the execution plan in the terraform cloud.
 The lambda function code gets bundled to provide the zip file archive for the deployment of the lambda function.  
 Afterwards a terraform project is being initiated in the terraform cloud.   
 Next the main.tf template gets validated an execution plan is being created    
-and then applied/deployed in the terraform cloud.
+and then applied in the terraform cloud.
 
 ## CI
 
@@ -45,8 +45,7 @@ The second job `test` tests the integration of the lambda handler against
 the new deployment. It ensures that the lambda handler reads a string from S3,   
 reverses it and puts its into another S3 bucket.   
 
-An example string is being copied to the bucket to provide a string    
-for the lambda handler to perform the reversion on.
+A sample string is copied into the bucket to provide a string for the lambda handler.
 
 ### Test cases
 
