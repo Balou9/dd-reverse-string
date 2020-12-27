@@ -11,7 +11,7 @@ The use of Terraform is mandatory.
 
 ## CD/CI Workflow
 
-Therefore I created a workflow which gets triggered on push to the main branch.  
+I created a workflow which gets triggered on push to the main branch.  
 It consists of a deployment job `deploy` and a test job `test`.   
 
 The workflow runs the `deploy` and the `test` job in a sequence,  
@@ -34,10 +34,9 @@ The first job `deploy` creates a terraform execution plan based
 on the defined resources in the main.tf template and deploys   
 the execution plan in the terraform cloud.
 
-To provide the zip file archive for the deployment of the lambda function  
-the function code gets bundled. Afterwards a terraform project     
-is being initiated in the terraform cloud.   
-After validating the main.tf template an execution plan is being created    
+The lambda function code gets bundled to provide the zip file archive for the deployment of the lambda function.  
+Afterwards a terraform project is being initiated in the terraform cloud.   
+Next the main.tf template gets validated an execution plan is being created    
 and then applied/deployed in the terraform cloud.
 
 ## CI
