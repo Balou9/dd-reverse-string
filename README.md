@@ -1,10 +1,10 @@
 # dd-reverse-string
 
-[![cdci](https://github.com/Balou9/dd-reverse-string/workflows/cdci/badge.svg)](https://github.com/Balou9/dd-reverse-string/actions)
+[![cdci](https://github.com/Balou9/dd-reverse-string/workflows/cdci/badge.svg)](https://github.com/Balou9/dd-reverse-string/actions)W
 
-## Task
+## Challenge
 
-The goal is to create a Lambda Handler which performs a string reversion.  
+Create a Lambda Handler which performs a string reversion.  
 The handler reads the string from one S3 bucket, flips the string,  
 and then stores it in another S3 bucket.
 The use of Terraform is mandatory.
