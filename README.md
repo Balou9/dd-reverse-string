@@ -1,6 +1,6 @@
 # dd-reverse-string
 
-[![cdci](https://github.com/Balou9/dd-reverse-string/workflows/cdci/badge.svg)](https://github.com/Balou9/dd-reverse-string/actions)W
+[![cdci](https://github.com/Balou9/dd-reverse-string/workflows/cdci/badge.svg)](https://github.com/Balou9/dd-reverse-string/actions)
 
 ## Challenge
 
@@ -11,7 +11,7 @@ The use of Terraform is mandatory.
 
 ## CD/CI Workflow
 
-I created a workflow which gets triggered on push to the main branch.  
+I created a workflow which gets triggered on push commits to the main branch.  
 It consists of a deployment job `deploy` and a test job `test`.   
 
 The workflow runs the `deploy` and the `test` job in a sequence,  
