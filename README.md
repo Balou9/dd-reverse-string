@@ -26,7 +26,7 @@ The test cases are defined in a [test suite](https://github.com/Balou9/dd-revers
 
 #### test_reverse_string_204()
 
-- tests if the reverse-string-handler returns statusCode `204` if required parameters `from: object key of the string file to be reversed, to: object key of the reversed string file` are passed and if the string in the destination bucket has actually been reversed
+- tests if the reverse-string-handler returns statusCode `204` if required parameters `from: s3 object key of the file which contains a string to be reversed, to: s3 object key of the reversed string file` are passed and if the string in the destination bucket has actually been reversed
 
 #### test_reverse_string_400()
 
