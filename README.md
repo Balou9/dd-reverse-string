@@ -14,7 +14,7 @@ I created a [workflow](https://github.com/Balou9/dd-reverse-string/blob/main/.gi
 
 ## CD
 
-The first job `deploy` bundles the [handler](https://github.com/Balou9/dd-reverse-string/blob/main/index.js) and creates a terraform execution plan based on the defined resources in the [main.tf](https://github.com/Balou9/dd-reverse-string/blob/main/main.tf) template and deploys the execution plan in the terraform cloud.
+The first job `deploy` bundles the [handler](https://github.com/Balou9/dd-reverse-string/blob/main/index.js) and creates a terraform execution plan based on the defined resources in the [main.tf](https://github.com/Balou9/dd-reverse-string/blob/main/main.tf) template. Afterwards it deploys the execution plan in the terraform cloud.
 
 ## CI
 

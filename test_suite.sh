@@ -11,7 +11,7 @@ test_reverse_string_204() {
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 204
 
-  printf "test_string_has_been_reversed\n"
+  printf "test_reversed_string_has_actually_been_reversed\n"
   plain_string="$(mktemp)"
   reversed_string="$(mktemp)"
 
