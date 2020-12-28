@@ -10,26 +10,25 @@ test_reverse_string_204() {
 
   status=$(cat $resp_body | jq .statusCode)
   assert_equal $status 204
-}
 
-test_string_has_been_reversed() {
   printf "test_string_has_been_reversed\n"
-  example="$(mktemp)"
-  reversed_example="$(mktemp)"
+  plain_string="$(mktemp)"
+  reversed_string="$(mktemp)"
 
   aws s3api get-object \
     --bucket plain-string-bucket \
-    --key example.json \
-    $example
-  > /dev/null
-  aws s3api get-object \
-    --bucket reversed-string-bucket \
-    --key reversed_example.json \
-    $reversed_example \
+    --key example.txt \
+    $plain_string \
   > /dev/null
 
-  bash_reversed_example=$(cat $example | rev)
-  if grep -xq "$bash_reversed_example" "$reversed_example"; then
+  aws s3api get-object \
+    --bucket reversed-string-bucket \
+    --key reversed_example.txt \
+    $reversed_string \
+  > /dev/null
+
+  bash_reversed_string=$(cat $plain_string | rev)
+  if grep -xq "$bash_reversed_string" "$reversed_string"; then
     printf "The string has been reversed\n"
   fi
 }
